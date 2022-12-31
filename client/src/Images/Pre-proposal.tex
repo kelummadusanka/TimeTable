@@ -1,0 +1,276 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{introduction}{%
+\subsubsection{Introduction}\label{introduction}}
+
+Although surveillance cameras are allowed to identify the fast events,
+it is not sufficient to full fill human requirement. In that case real
+time event detection is more critical in present day world. Especially
+instant detection of anomalies in usual surrounding is very important
+for security concerns and other time depended situations. Manual
+monitoring of fast event in surveillance camera may be useless because
+of high time consumption, lack of detecting ability of humans and delay
+to take necessary action. Therefore, there is a high demand for real
+time event detecting system, but that is not famous in commercially. In
+this situation, computerize system of artificial intelligence with
+surveillance camera for detecting and indicating anomalies may be a good
+solution and it will improve the effectiveness and efficiency of
+surveillance camera system and other possible cases. Among the thousands
+of possible use cases and applications this system well fit and will
+produce high efficiency output for home surrounding because of low
+complexity.
+
+\hypertarget{background}{%
+\subsubsection{Background}\label{background}}
+
+\textbf{Problem statement}
+
+Surveillance cameras are usually used in everywhere to identify the
+incidents. But problem is the, owner of the surveillance camera has to
+identify the particular unusual event by manually and has to checkout it
+by walking through whole video. When manually detecting the unusual
+event, it may be too delay to take action or sometimes video data may be
+removed from the storage. The existing solution for detect and indicate
+anomalies in real time such as motions sensor, etc. are failed because
+of they are not intelligence to identify normal and abnormal events. If
+not lot of employers have been assigned to monitor real time incidents.
+This may be expensive and less effective due to human inabilities
+
+In that case anomalies detection of surveillance camera in real time is
+coming into the picture. Producing real time anomalies detection system
+for CCTV camera system, above problems will be solve very effectively.
+
+\textbf{Objective and Scope}
+
+The main goal of this project is the implementing a system for detecting
+real time anomalies in surveillance camera. This goal is achieved by
+completing following objectives.
+
+\textbf{Objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Input data to real time processing
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Surveillance video footage from cameras
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  Preprocessing video frames
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Convert frames to grayscale
+\item
+  Remove noise or blur from frames
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  Identifying suitable feature extraction method
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Extract edges, shapes and patterns from frames
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\item
+  ML model training for classify the normal and anomalies
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Train a machine learning model of neural network
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\item
+  Model evaluation
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Evaluate the model's performance on a separate test set
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\item
+  Real-time detection
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Use the trained model to classify new frames from the surveillance
+  video as normal or abnormal in real-time
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\item
+  Implement an alert generation system to generate an alert if an
+  abnormal event is detected
+\end{enumerate}
+
+\textbf{Scope}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  In the first stage, single camera data will feed into the system for
+  processing.
+\item
+  Quality of the video in CCTV camera may be reduced to grayscale color
+  scheme for reliable fast operation
+\item
+  Frame of real time video will be fixed
+\item
+  All the experiments will be done focusing home environment in the
+  Faculty of Engineering university of Ruhuna
+\end{enumerate}
+
+\textbf{Methodology}
+
+\textbf{Work plan and budget}
+
+Work Plan
+
+The estimated work plan and the milestones for the project can be
+mentioned as follows. Letters A,B and C mentioned in below tables
+represent,
+
+A -- Basnayaka B.C.H
+
+B -- Kumaradasa
+
+C- Madusanka I.K.
+
+MILESTONE 01: PROJECT TOPIC SELECTION
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Tasks &\tabularnewline
+\midrule
+\endhead
+Task 1.1 & Select the topics which is suitable for us\tabularnewline
+Task 1.2 & Read the given project proposal description\tabularnewline
+Task 1.3 & Discussed with the supervisors about project
+objectives\tabularnewline
+Task 1.4 & Select one topic and get approval\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table : Project topic selection
+
+MILESTONE 02: STUDY ABOUT THE PROJECT BACKGROUND
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Tasks &\tabularnewline
+\midrule
+\endhead
+Task 2.1 & Understand the background\tabularnewline
+Task 2.2 & Literature survey on real time event detection in
+surveillance cameras\tabularnewline
+Task 2.3 & Understand the existing systems and possible
+technologies\tabularnewline
+Task 2.4 & Understand the next steps of existing
+solutions\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table : Studying about the background of the project
+
+MILESTONE 03 : PROJECT PROPOSAL SUBMISSION
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Tasks &\tabularnewline
+\midrule
+\endhead
+Task 3.1 & Finalize the structure of the project proposal\tabularnewline
+Task 3.2 & Complete the project proposal\tabularnewline
+Deliverables &\tabularnewline
+D 3.1 & Understand the next steps of existing solutions\tabularnewline
+\bottomrule
+\end{longtable}
+
+Table : Project proposal submission
+
+\end{document}

@@ -1,0 +1,41 @@
+.ds1
+{
+    text-align: center;
+    font-size: 25px;
+    color: black;
+}
+
+.intro2
+{
+	color: #800000;
+	font-size: 30px;
+	text-align: center;
+
+}
+
+.dsth1
+{
+    width: 500px;
+    height: 30px;
+    background-color: beige;
+}
+
+.dstr1
+{
+    height: 25px;
+    background-color: rgb(158, 233, 195);
+    
+}
+
+.dstr2
+{
+    height: 25px;
+    background-color:rgb(199, 238, 218) ;
+    
+}
+
+.dstr3
+{
+    height: 25px;
+    background-color:rgb(199, 238, 218);
+}

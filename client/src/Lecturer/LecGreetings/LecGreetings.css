@@ -1,0 +1,24 @@
+.dep1
+{	
+	color: white;
+    font-size: larger;
+    
+}
+
+.gr1
+{	
+	color: white;
+    font-size: 40px;
+    text-align: center;
+    background-color: teal ;
+    margin: -24px;
+    padding: 30px;
+    
+}
+
+.grimg1
+{
+    height: 100px;
+    width: 100px;
+    margin-top: -110px;
+}
