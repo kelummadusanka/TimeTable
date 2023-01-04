@@ -26,6 +26,7 @@ exports.ModCreate = (req, res) => {
                 depID: req.body.depID,
                 Modcode:req.body.Modcode,
                 AssignedLec:req.body.AssignedLec,
+                Capacity:req.body.Capacity,
               });
               createMod
                 .save()

@@ -228,6 +228,7 @@ const sems =parseInt(modWithTeac.semester.split(" ")[1])
               name="semester"
               onChange={onChangeFun}
             >
+              <option>-- </option>
               {
                 semester.map(se=>{
                   return <option>Semester 0{se} </option>
@@ -242,6 +243,7 @@ const sems =parseInt(modWithTeac.semester.split(" ")[1])
           <FormControl>
             <FormLabel>Module</FormLabel>
             <Select bg={"white"} name="Module" onChange={onChangeFun}>
+            <option>-- </option>
               {Module.map((modu) => {
                 return <option>{modu.Modcode + " " + modu.ModName}</option>;
               })}
@@ -251,6 +253,7 @@ const sems =parseInt(modWithTeac.semester.split(" ")[1])
           <FormControl>
             <FormLabel>Teacher</FormLabel>
             <Select bg={"white"} name="teacher" onChange={onChangeFun}>
+            <option>-- </option>
               {Lect.map((lect) => {
                 return (
                   <option >

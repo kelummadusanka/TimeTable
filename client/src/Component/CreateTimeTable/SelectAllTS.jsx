@@ -1,10 +1,4 @@
-import {
-  VStack,
-  IconButton,
-  HStack,
-  Button,
-  useToast,
-} from "@chakra-ui/react";
+import { VStack, IconButton, HStack, Button, useToast } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
 import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
@@ -16,11 +10,23 @@ import { useEffect } from "react";
 
 function SelectAllTS() {
   const [allLecDet, setallLecDet] = useState([]);
+  const [allLRoomDet, setallLRoomDet] = useState([]);
+  const [allLModDet, setallLModDet] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:4000/app/Lecturer/getlecturer")
       .then((res) => setallLecDet(res.data));
+
+    axios
+      .get("http://localhost:4000/app/Rooms/getRoom")
+      .then((res) =>
+        setallLRoomDet(res.data.sort((a, b) => a.Capacity - b.Capacity))
+      );
+
+    axios
+      .get("http://localhost:4000/app/Module/getModule")
+      .then((res) => setallLModDet(res.data));
   }, []);
 
   // -----------------------------------------------------------------------------
@@ -30,7 +36,7 @@ function SelectAllTS() {
   const Navigate = useNavigate();
   const toast = useToast();
   let Timecells = [];
-  console.log(modWithTeacs)
+  console.log(modWithTeacs);
   // -----------------------------------------------------------------------------
 
   var lecsem = []; // filterd object from semester:4, Teacher:{..... } -------> Teacher part only
@@ -39,6 +45,8 @@ function SelectAllTS() {
     lecsem = [...lecsem, ...element.Teachers];
     choosedSem = [...choosedSem, parseInt(element.semester)];
   });
+
+  console.log(lecsem);
   // -----------------------------------show only one time table and shift when button are click
   var inde = 0;
   const [TableIndex, setTableIndex] = useState(0);
@@ -63,15 +71,13 @@ function SelectAllTS() {
   let lecsemIds = []; // ex:- [143,162....]
   let tempLecIds = []; // ex:- [1,2,3....]
   te.forEach((element) => {
-
     let leci = allLecDet.filter(
       (lecd) =>
         lecd.lastname === element.split(" ")[2] &&
         lecd.firstname === element.split(" ")[1]
     )[0];
-    leci = {...leci, temid:i}
-    tempLecIds = [...tempLecIds,leci];
-
+    leci = { ...leci, temid: i };
+    tempLecIds = [...tempLecIds, leci];
 
     lecsem.filter((le) => {
       if (le.teacher === element && typeof le.teacher !== "undefined") {
@@ -86,22 +92,64 @@ function SelectAllTS() {
 
     i++;
   });
-
   // -----Let generate our core. that is time table generating function-----
 
+  const allocateLecrooms = (timecell) => {
+    console.log(timecell)
+    choosedSem.forEach((sem) => {
+      const thisSemTimeCell = timecell.filter(
+        (tc) => parseInt(tc.semester.split(" ")[1]) == sem
+      );
+      const diferModinSem = [
+        ...new Set(thisSemTimeCell.map((item) => item.Module.split(" ")[0])),
+      ];
+      diferModinSem.forEach((mod) => {
+        const modcap = allLModDet.filter((mo) => mo.Modcode === mod)[0]
+          .Capacity;
+
+          const suitRoom = allLRoomDet.filter(room=>room.Capacity> modcap)[0]
+
+          timecell.filter(tc=>{
+            if(tc.Module.split(" ")[0]===mod){
+              tc.Roomcode= suitRoom.RoomName
+              
+
+            }
+
+            console.log(timecell)
+            
+          })
+
+          
+      });
+
+      //grab module details
+      // const matchcodeInLecSem = lecsem.filter(
+      //   (les) => les.temLC === element
+      // )[0];
+      // const moddet = allLModDet.filter(
+      //   (mo) => mo.Modcode === matchcodeInLecSem.Module.split(" ")[0]
+      // )[0];
+      // var allLRoomDetCopy = allLRoomDet;
+
+      //console.log(moddet);
+
+      //....................
+    });
+  };
+
   const GenerateTimeTable = async () => {
-    
     console.log("i am in");
     let tempLecIdsCopy = tempLecIds;
     let timeidsCopy = timeids;
 
-    console.log(tempLecIds)
+    console.log(tempLecIds);
     //...........................................................
-    
+
     tempLecIds.forEach((element) => {
       //element----------> {....fristname, lastname},{....}
-      console.log(element)
-      
+      console.log(element);
+
       let unlikes = element.unlikes;
       let likes = element.likes;
       //......separate lecsemhour code array for choosed lec
@@ -139,6 +187,7 @@ function SelectAllTS() {
 
       lecSemCodforL.forEach((element) => {
         //element----------> 123...
+
         const LecSem = Math.floor((element / 10) % 10); //takeing 10th place value--->2
 
         const ThisTSFS = timeidsforL.filter((e) => {
@@ -192,7 +241,7 @@ function SelectAllTS() {
 
         //case 1.1 - check availablity of 2 consecutive lec hours in likes set
 
-        if (hours > 2) {
+        if (hours > 1) {
           resultArr = checkConsecutive(LATS);
           console.log(LATS);
           LATS = rmSelday(LATS, resultArr);
@@ -201,7 +250,7 @@ function SelectAllTS() {
 
         //case 1.2 - check availablity of 2 consecutive lec hours in second options set
 
-        if (hours > 2 && !resultArr.length) {
+        if (hours > 1 && !resultArr.length) {
           resultArr = checkConsecutive(sOp);
           sOp = rmSelday(sOp, resultArr);
         }
@@ -244,11 +293,12 @@ function SelectAllTS() {
     });
 
     await axios
-      .post("http://localhost:4000/app/Diselect/createDiselect", {diselect:diselect})
+      .post("http://localhost:4000/app/Diselect/createDiselect", {
+        diselect: diselect,
+      })
       .then((response) => {
         console.log(response);
-      })
-
+      });
 
     await axios
       .post("http://localhost:4000/app/TimeCell/createTimeCell", Timecells)
@@ -274,18 +324,19 @@ function SelectAllTS() {
           });
         }
       });
+    //allocateLecrooms(Timecells);
     Navigate("/admin/CreateTimeTable/ViewAllTT", { state: diselect });
   };
 
   // ----------------------------------------------------------------------------------------------
   function clearAll() {
     axios
-    .delete("http://localhost:4000/app/TimeCell/TimeCelldelete", {})
-    .then((res) => console.log(res));
+      .delete("http://localhost:4000/app/TimeCell/TimeCelldelete", {})
+      .then((res) => console.log(res));
 
     axios
-    .delete("http://localhost:4000/app/Diselect/DeleteDiselect", {})
-    .then((res) => console.log(res));
+      .delete("http://localhost:4000/app/Diselect/DeleteDiselect", {})
+      .then((res) => console.log(res));
   }
   return (
     <VStack
@@ -299,15 +350,14 @@ function SelectAllTS() {
       alignItems="center"
     >
       <IconButton
-      display={TableIndex<choosedSem.length-1?"flex":"none"}
+        display={TableIndex < choosedSem.length - 1 ? "flex" : "none"}
         _hover={{ opacity: 1, bg: "gray.100" }}
         opacity={0.3}
         isRound
         onClick={() => {
-          if (inde<choosedSem.length-1) {
-            inde = TableIndex+1;
+          if (inde < choosedSem.length - 1) {
+            inde = TableIndex + 1;
             setTableIndex(inde);
-
           }
         }}
         variant={"ghost"}
@@ -322,21 +372,23 @@ function SelectAllTS() {
         overflow="auto"
         pos={"relative"}
       >
-        {choosedSem.sort((a, b) => a - b).map((sem, index) => {
-          return (
-            <TimeSelect
-              key={index}
-              index={index}
-              sem={sem}
-              TableIndex={TableIndex}
-              modWithTeacs={modWithTeacs}
-              settimeids={settimeids}
-              timeids={timeids}
-              setdiselect={setdiselect}
-              diselect={diselect}
-            />
-          );
-        })}
+        {choosedSem
+          .sort((a, b) => a - b)
+          .map((sem, index) => {
+            return (
+              <TimeSelect
+                key={index}
+                index={index}
+                sem={sem}
+                TableIndex={TableIndex}
+                modWithTeacs={modWithTeacs}
+                settimeids={settimeids}
+                timeids={timeids}
+                setdiselect={setdiselect}
+                diselect={diselect}
+              />
+            );
+          })}
       </VStack>
 
       <HStack
@@ -357,15 +409,15 @@ function SelectAllTS() {
           Clear Prvious Data
         </Button>
         <IconButton
-        display={TableIndex>0? "flex" : "none"}
+          display={TableIndex > 0 ? "flex" : "none"}
           _hover={{ opacity: 1, bg: "gray.100" }}
           opacity={0.3}
           isRound
           variant={"ghost"}
           colorScheme={"messenger"}
           onClick={() => {
-            if (TableIndex>0) {
-              inde=TableIndex-1;
+            if (TableIndex > 0) {
+              inde = TableIndex - 1;
               setTableIndex(inde);
             }
           }}

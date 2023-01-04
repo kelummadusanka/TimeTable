@@ -36,6 +36,12 @@ const Module = new mongoose.Schema({
 
 },
 
+Capacity:{
+  type: Number,
+  required: true
+
+},
+
 });
 
 

@@ -17,7 +17,6 @@ import { Link, useLocation } from "react-router-dom";
 
 function GridBox({ data,diselects }) {
 
-  console.log(diselects)
   return (
     <Tooltip label={data.value} aria-label="A tooltip" w={'full'}>
       <GridItem

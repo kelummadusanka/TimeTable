@@ -42,12 +42,14 @@ function Module() {
   const [DispLecturer, setDispLecturer] = useState([]);
   const [DrawerLecturer, setDrawerLecturer] = useState([]);
   const [ModLastPart, setModLastPart] = useState("");
+  const [calluseeffet, setcalluseeffet] = useState(true);
   const [ModeCode, setModeCode] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [Module, setModule] = useState([]);
   const btnRef = React.useRef();
 
   function onChangeFun(e) {
+    setcalluseeffet(!calluseeffet)
 
     if (e.target.name === "Department") {
 
@@ -78,17 +80,26 @@ function Module() {
     setModule({ ...Module, [e.target.name]: e.target.value });
   }
   useEffect(() => {
+
     axios
       .get("http://localhost:4000/app/Module/getModule")
       .then((res) => {
-        if (res.data.length < 10) {
-          var x = res.data.length + 1;
-          setModLastPart("0" + x);
-        } else {
-          setModLastPart(res.data.length + 1);
+console.log(res.data.filter(re=> re.Semester==Module.Semester))
+        const filres= res.data.filter(re=>re.depID===Module.depID && re.Semester==Module.Semester)
+        console.log(filres)
+          if (filres.length < 10) {
+            var x = filres.length + 1;
+            setModLastPart("0" + x);
+          } else {
+            setModLastPart(filres.length + 1);
+          }
+     
+        
+
+
         }
-      })
-      .catch((error) => {});
+
+        ).catch((error) => {})
 
     axios
       .get("http://localhost:4000/app/Lecturer/getlecturer")
@@ -96,7 +107,7 @@ function Module() {
         setDrawerLecturer(res.data);
       })
       .catch((error) => {});
-  }, []);
+  }, [calluseeffet]);
 
   function Modulesave() {
     console.log(Module)
@@ -130,6 +141,9 @@ function Module() {
           });
         }
       });
+      console.log(calluseeffet)
+
+      setcalluseeffet(!calluseeffet)
   }
 
   const GetSelLectures = (e) => {
@@ -150,6 +164,7 @@ function Module() {
   };
 
   const gereateCode = () => {
+    setcalluseeffet(!calluseeffet)
     if (Module.Department === "Electrical and Information") {
       setModeCode(
         "EE" + Module.Semester + "" + Module.ModCredit + "" + ModLastPart
@@ -190,6 +205,7 @@ function Module() {
           <FormControl>
             <FormLabel>Deparment</FormLabel>
             <Select bg={"white"} name="Department" onChange={onChangeFun}>
+            <option>-- </option>
               <option>Electrical and Information</option>
               <option>Civil and Environmental</option>
               <option>Mechanical and Manufacturing</option>
@@ -198,8 +214,7 @@ function Module() {
           <FormControl>
             <FormLabel>Semester</FormLabel>
             <Select bg={"white"} name="Semester" onChange={onChangeFun}>
-              <option>1</option>
-              <option>2</option>
+            <option>-- </option>
               <option>3</option>
               <option>4</option>
               <option>5</option>
@@ -222,6 +237,7 @@ function Module() {
           <FormControl>
             <FormLabel>Credit</FormLabel>
             <Select bg={"white"} name="ModCredit" onChange={onChangeFun}>
+            <option>-- </option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -256,6 +272,17 @@ function Module() {
             />
           </FormControl>
 
+          <FormControl isRequired>
+            <FormLabel>Capacity</FormLabel>
+            <Input
+              placeholder="75"
+              bg={"white"}
+              mb={4}
+              name="Capacity"
+              onChange={onChangeFun}
+            />
+          </FormControl>
+          
           <FormControl>
             <FormLabel>Assign Lectures</FormLabel>
             <Button colorScheme="teal" onClick={onOpen}>
@@ -266,12 +293,14 @@ function Module() {
                 <ListItem key={key}>
                   <Flex
                     bg={"gray.50"}
+                     
+                    opacity='0.7'
                     borderWidth="2px"
                     p="5px"
                     borderRadius="lg"
                     justifyContent={"space-between"}
                   >
-                    <Text placeholder="Enter amount" maxW={250}>
+                    <Text placeholder="Enter amount" maxW={250} >
                       {lec}
                     </Text>
                     <IconButton
@@ -357,8 +386,8 @@ function Module() {
         bottom="150px"
         zIndex={-1}
         src={Book}
-        w={500}
-        h={300}
+        w={460}
+        h={280}
       />
       <Spacer></Spacer>
       <Divider></Divider>
