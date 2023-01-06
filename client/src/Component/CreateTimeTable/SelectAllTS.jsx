@@ -36,7 +36,6 @@ function SelectAllTS() {
   const Navigate = useNavigate();
   const toast = useToast();
   let Timecells = [];
-  console.log(modWithTeacs);
   // -----------------------------------------------------------------------------
 
   var lecsem = []; // filterd object from semester:4, Teacher:{..... } -------> Teacher part only
@@ -46,7 +45,6 @@ function SelectAllTS() {
     choosedSem = [...choosedSem, parseInt(element.semester)];
   });
 
-  console.log(lecsem);
   // -----------------------------------show only one time table and shift when button are click
   var inde = 0;
   const [TableIndex, setTableIndex] = useState(0);
@@ -95,7 +93,8 @@ function SelectAllTS() {
   // -----Let generate our core. that is time table generating function-----
 
   const allocateLecrooms = (timecell) => {
-    console.log(timecell)
+    //allLRoomDet.forEach(room=>)
+
     choosedSem.forEach((sem) => {
       const thisSemTimeCell = timecell.filter(
         (tc) => parseInt(tc.semester.split(" ")[1]) == sem
@@ -107,35 +106,35 @@ function SelectAllTS() {
         const modcap = allLModDet.filter((mo) => mo.Modcode === mod)[0]
           .Capacity;
 
-          const suitRoom = allLRoomDet.filter(room=>room.Capacity> modcap)[0]
-
-          timecell.filter(tc=>{
-            if(tc.Module.split(" ")[0]===mod){
-              tc.Roomcode= suitRoom.RoomName
-              
-
-            }
-
-            console.log(timecell)
-            
-          })
-
           
+          timecell.filter((tc) => {
+            
+            const suitRoom = allLRoomDet.filter(
+             
+              (room) => (room.Capacity >= modcap && !room.Reservations.filter(r=>r.DayTime===tc.timeSlots%100).length)
+            )[0];
+
+
+          if (tc.Module.split(" ")[0] === mod) {
+            tc.Roomcode = suitRoom.RoomName;
+
+            allLRoomDet.filter((room) => {
+              if (room === suitRoom) {
+                room.Reservations.push({ semester: sem, DayTime: tc.timeSlots%100 });
+              }
+            });
+          }
+
+          console.log(allLRoomDet);
+
+          console.log(timecell);
+        });
       });
-
-      //grab module details
-      // const matchcodeInLecSem = lecsem.filter(
-      //   (les) => les.temLC === element
-      // )[0];
-      // const moddet = allLModDet.filter(
-      //   (mo) => mo.Modcode === matchcodeInLecSem.Module.split(" ")[0]
-      // )[0];
-      // var allLRoomDetCopy = allLRoomDet;
-
-      //console.log(moddet);
 
       //....................
     });
+
+    return timecell
   };
 
   const GenerateTimeTable = async () => {
@@ -143,12 +142,10 @@ function SelectAllTS() {
     let tempLecIdsCopy = tempLecIds;
     let timeidsCopy = timeids;
 
-    console.log(tempLecIds);
     //...........................................................
 
     tempLecIds.forEach((element) => {
       //element----------> {....fristname, lastname},{....}
-      console.log(element);
 
       let unlikes = element.unlikes;
       let likes = element.likes;
@@ -243,9 +240,8 @@ function SelectAllTS() {
 
         if (hours > 1) {
           resultArr = checkConsecutive(LATS);
-          console.log(LATS);
+
           LATS = rmSelday(LATS, resultArr);
-          console.log(LATS);
         }
 
         //case 1.2 - check availablity of 2 consecutive lec hours in second options set
@@ -292,19 +288,18 @@ function SelectAllTS() {
       });
     });
 
+    const Timecellwithrooms = allocateLecrooms(Timecells);
+
+
     await axios
       .post("http://localhost:4000/app/Diselect/createDiselect", {
         diselect: diselect,
       })
-      .then((response) => {
-        console.log(response);
-      });
+      .then((response) => {});
 
     await axios
-      .post("http://localhost:4000/app/TimeCell/createTimeCell", Timecells)
-      .then((response) => {
-        console.log(response);
-      })
+      .post("http://localhost:4000/app/TimeCell/createTimeCell", Timecellwithrooms)
+      .then((response) => {})
       .catch((error) => {
         //console.log(error.message);
         if (error.response) {
@@ -324,7 +319,7 @@ function SelectAllTS() {
           });
         }
       });
-    //allocateLecrooms(Timecells);
+
     Navigate("/admin/CreateTimeTable/ViewAllTT", { state: diselect });
   };
 

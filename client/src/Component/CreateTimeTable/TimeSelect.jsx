@@ -239,26 +239,6 @@ function TimeSelect({ sem, TableIndex, settimeids, timeids,setdiselect, diselect
             </Grid>
           </GridItem>
         </Grid>
-
-        {/* <NavigationArrow next="/CreateTimeTable/TimeView"  back= "/admin/CreateTimeTable/AssignTeachers" />
-
-
-        <HStack
-          spacing={"25px"}
-          alignSelf={"flex-end"}
-          justifyContent={"space-between"}
-        >
-          <Button width={100} colorScheme="whatsapp" variant="outline">
-            Clear All
-          </Button>
-
-
-
-          <Button colorScheme="whatsapp" width={100} onClick={GenerateTimeTable}>
-            Generate
-          </Button>
-
-        </HStack> */}
       </Flex>
     </Flex>
   );

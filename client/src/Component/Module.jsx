@@ -87,7 +87,9 @@ function Module() {
 console.log(res.data.filter(re=> re.Semester==Module.Semester))
         const filres= res.data.filter(re=>re.depID===Module.depID && re.Semester==Module.Semester)
         console.log(filres)
-          if (filres.length < 10) {
+
+
+          if (filres.length < 9) {
             var x = filres.length + 1;
             setModLastPart("0" + x);
           } else {

@@ -64,6 +64,32 @@ createPeriods(semId) {
   
     return TimeSlots;
   }
+
+
+  RoomTime(rooms){
+    const Allroomshours = [{}];
+    rooms.forEach(element => {
+        for (let i = 1; i < 6; i++) {
+          for (let j = 1; j < 9; j++) {
+            Allroomshours.push({
+              id: parseInt(`${element._id}`+`${i}` + `${j}`),
+              type: "period",
+              semester:element,
+              time: `${7 + j}:30-${8 + j}:30`,
+              day: WeekDays[i - 1],
+              room:'',
+              lectrurer:'',
+              Modcode:'',
+              ModName:''
+            });
+          }
+  
+        }
+      });
+  
+  
+    return Allroomshours;
+  }
   
  // const AllTimeSlots =EmptyTimeCell(choosedSem);
   

@@ -12,14 +12,14 @@ const TimeSl = [
   "14301530",
   "15301630",
 ];
-const Roomarry=["LT2","LT1","ELR","ECC","NWLR1","NWLR2","LR1","LR2"]
+//const Roomarry=["LT2","LT1","ELR","ECC","NWLR1","NWLR2","LR1","LR2"]
 
 exports.TimeCellCreate = async(req, res) => {
   console.log("Inside TimeCell create");
   let Arra =[]
   req.body.forEach((element) => {
-    const roomIndex = Math.floor(Math.random() * (Roomarry.length - 1));
-    const roo = Roomarry[roomIndex];
+    //const roomIndex = Math.floor(Math.random() * (Roomarry.length - 1));
+    //const roo = Roomarry[roomIndex];
     const dayindex = Math.floor((element.timeSlots / 10) % 10) - 1;
     const day = WeekDays[dayindex];
     const timeindex = Math.floor(element.timeSlots % 10) - 1;
@@ -28,7 +28,7 @@ exports.TimeCellCreate = async(req, res) => {
       Lecturer: element.teacher,
       ModName: element.Module.substr(element.Module.indexOf(" ") + 1),
       Modcode: element.Module.split(" ")[0],
-      Roomcode: roo,
+      Roomcode: element.Roomcode,
       Semester: Math.floor((element.timeSlots / 100) % 10),
       day: day,
       time: time,
@@ -36,8 +36,7 @@ exports.TimeCellCreate = async(req, res) => {
     };
 
     Arra= [...Arra,objec]
-    
-    console.log(Arra);
+  
   });
 
   console.log("Inside insert TimeCell");

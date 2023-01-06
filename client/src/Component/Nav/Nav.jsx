@@ -55,6 +55,12 @@ export default function Nav() {
           title="Create Time Table"
           to="/admin/CreateTimeTable"
         />
+        <NavItem
+          navSize={navSize}
+          icon={FiCalendar}
+          title="View Time Table"
+          to="/admin/CreateTimeTable/ViewAllTT"
+        />
 
         <NavItem
           navSize={navSize}
@@ -94,7 +100,7 @@ export default function Nav() {
             display={navSize === "small" ? "none" : "flex"}
           >
             <Heading as="h3" size="sm" color="purple.800">
-              Admin S
+              Admin 
             </Heading>
             <Text color="black">Admin</Text>
           </Flex>

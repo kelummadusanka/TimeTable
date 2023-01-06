@@ -33,11 +33,16 @@ import React, { useState } from "react";
 import { BiUser, BiCamera, BiBookAlt } from "react-icons/bi";
 import axios from "axios";
 import PreferencesTable from "./PreferencesTable";
+import { useEffect } from "react";
 
-const ModuleList = [
+
+var ModuleList = [
   "EE4301 Signal and System",
   "EE5302 Communication System",
   "EE6301 Signal and System",
+  "EE1101 Introduction to programming I",
+  "EE2101 Introduction to programming II",
+  "EE3302 Data structures and Algorithm",
 ];
 
 function LecCreate() {
